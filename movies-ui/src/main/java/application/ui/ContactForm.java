@@ -27,7 +27,7 @@ public class ContactForm extends FormLayout {
     TextField lastName = new TextField("Last name");
     TextField phone = new TextField("Phone");
     TextField email = new TextField("Email");
-    private DateField birthDate;
+    DateField birthDate = new DateField("Birth date");
 
     User contact;
 
@@ -35,20 +35,21 @@ public class ContactForm extends FormLayout {
     BeanFieldGroup<User> formFieldBindings;
 
     public ContactForm() {
+        birthDate.setConverter(DateToLongConverter.class);
         configureComponents();
         buildLayout();
     }
 
-    @Bean(name = "birthDate")
-    DateField getBirthDateField() {
-        if (birthDate == null) {
-            birthDate = new DateField("Birth date");
-//            ReverseConverter<DateToLongConverter>;
-            birthDate.setConverter(DateToLongConverter.class);
-//            birthDate.setConverter(new StringToDateConverter());
-        }
-        return birthDate;
-    }
+//    @Bean(name = "birthDate")
+//    DateField getBirthDateField() {
+//        if (birthDate == null) {
+//            birthDate = new DateField("Birth date");
+////            ReverseConverter<DateToLongConverter>;
+//            birthDate.setConverter(DateToLongConverter.class);
+////            birthDate.setConverter(new StringToDateConverter());
+//        }
+//        return birthDate;
+//    }
 
     private void configureComponents() {
         /* Highlight primary actions.
@@ -68,7 +69,7 @@ public class ContactForm extends FormLayout {
         HorizontalLayout actions = new HorizontalLayout(save, cancel);
         actions.setSpacing(true);
 
-        addComponents(actions, firstName, lastName, phone, email, getBirthDateField());
+        addComponents(actions, firstName, lastName, phone, email, birthDate);
     }
 
     /* Use any JVM language.
