@@ -4,16 +4,12 @@ import application.models.User;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.converter.DateToLongConverter;
-import com.vaadin.data.util.converter.StringToDateConverter;
+import com.vaadin.data.util.converter.ReverseConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.context.annotation.Bean;
-
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /* Create custom UI Components.
  *
@@ -43,10 +39,11 @@ public class ContactForm extends FormLayout {
         buildLayout();
     }
 
-    @Bean
+    @Bean(name = "birthDate")
     DateField getBirthDateField() {
         if (birthDate == null) {
             birthDate = new DateField("Birth date");
+//            ReverseConverter<DateToLongConverter>;
             birthDate.setConverter(DateToLongConverter.class);
 //            birthDate.setConverter(new StringToDateConverter());
         }
