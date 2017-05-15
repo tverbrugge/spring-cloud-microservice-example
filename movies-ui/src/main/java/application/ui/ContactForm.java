@@ -3,10 +3,17 @@ package application.ui;
 import application.models.User;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.converter.DateToLongConverter;
+import com.vaadin.data.util.converter.StringToDateConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.context.annotation.Bean;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /* Create custom UI Components.
  *
@@ -24,7 +31,7 @@ public class ContactForm extends FormLayout {
     TextField lastName = new TextField("Last name");
     TextField phone = new TextField("Phone");
     TextField email = new TextField("Email");
-    DateField birthDate = new DateField("Birth date");
+    private DateField birthDate;
 
     User contact;
 
@@ -34,6 +41,16 @@ public class ContactForm extends FormLayout {
     public ContactForm() {
         configureComponents();
         buildLayout();
+    }
+
+    @Bean
+    DateField getBirthDateField() {
+        if (birthDate == null) {
+            birthDate = new DateField("Birth date");
+            birthDate.setConverter(DateToLongConverter.class);
+//            birthDate.setConverter(new StringToDateConverter());
+        }
+        return birthDate;
     }
 
     private void configureComponents() {
@@ -54,7 +71,7 @@ public class ContactForm extends FormLayout {
         HorizontalLayout actions = new HorizontalLayout(save, cancel);
         actions.setSpacing(true);
 
-        addComponents(actions, firstName, lastName, phone, email, birthDate);
+        addComponents(actions, firstName, lastName, phone, email, getBirthDateField());
     }
 
     /* Use any JVM language.
@@ -96,6 +113,7 @@ public class ContactForm extends FormLayout {
         this.contact = contact;
         if (contact != null) {
             // Bind the properties of the contact POJO to fiels in this form
+//            formFieldBindings.bind(firstName, "firstName");
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact, this);
             firstName.focus();
         }
