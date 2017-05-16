@@ -2,13 +2,16 @@ package application.models;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 public class User {
     private Long id;
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
-    private DateTime birthDate;
+//    private DateTime birthDate;
+    private Date birthDate;
 
     public String getFirstName() {
         return firstName;
@@ -42,11 +45,11 @@ public class User {
         this.email = email;
     }
 
-    public DateTime getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(DateTime birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
