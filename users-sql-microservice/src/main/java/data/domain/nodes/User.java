@@ -2,63 +2,84 @@ package data.domain.nodes;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	Long id;
+    @Column(name = "id")
+    Long id;
 
-	private String firstName;
-	private String lastName;
-	private String phone;
-	private String email;
-	private Date birthDate;
+    @Column(name = "firstname")
+    String firstName;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @Column(name = "lastname")
+    String lastName;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Column(name = "phonenum")
+    String phonenum;
 
-	public String getLastName() {
-		return lastName;
-	}
+    @Column(name = "email")
+    String email;
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    @Column(name = "birthdate")
+    Date birthDate;
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public String getPhonenum() {
+        return phonenum;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setPhonenum(String phonenum) {
+        this.phonenum = phonenum;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phonenum='" + phonenum + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
+    }
 }

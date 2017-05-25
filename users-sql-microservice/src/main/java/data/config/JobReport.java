@@ -1,6 +1,7 @@
 package data.config;
 
 import data.domain.nodes.Report;
+import data.domain.nodes.User;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -11,6 +12,7 @@ import org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.PathResource;
 
 import javax.sql.DataSource;
@@ -26,22 +28,26 @@ public class JobReport {
 //    public Report
 
     @Bean(name = "csvFileItemReader")
-    public FlatFileItemReader getCSVFileItemReader() {
+//    @Profile("demo")
+    public FlatFileItemReader<User> getCSVFileItemReader() {
 
-        DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
-        delimitedLineTokenizer.setNames(new String[]{"date", "impressions", "clicks", "earnings"});
+        DefaultLineMapper<User> lineMapper = new DefaultLineMapper<>();
+        lineMapper.setLineTokenizer(new DelimitedLineTokenizer() {
+            {
+                setNames(new String[]{"id", "firstName", "lastName", "phonenum", "birthDate"});
+            }
+        });
+        lineMapper.setFieldSetMapper(new BeanWrapperFieldSetMapper<User>() {
+            {
+                setTargetType(User.class);
+//                setPrototypeBeanName("User");
+            }
+        });
 
-//        PassThroughFieldSetMapper passThroughFieldSetMapper = new PassThroughFieldSetMapper();
-        BeanWrapperFieldSetMapper beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper();
-        beanWrapperFieldSetMapper.setPrototypeBeanName("report");
 
-        DefaultLineMapper lineMapper = new DefaultLineMapper();
-        lineMapper.setLineTokenizer(delimitedLineTokenizer);
-        lineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);
-
-
-        FlatFileItemReader reader = new FlatFileItemReader();
-        reader.setResource(new PathResource("classpath:csv/report.csv"));
+        FlatFileItemReader<User> reader = new FlatFileItemReader<>();
+        reader.setResource(new PathResource("users-sql-microservice/user.csv"));
+        reader.setLinesToSkip(1);
         reader.setLineMapper(lineMapper);
 
 
@@ -51,7 +57,7 @@ public class JobReport {
     private static final String SQL = "insert into RAW_REPORT(DATE,IMPRESSIONS,CLICKS,EARNINGS) " +
             "values (:date, :impressions, :clicks, :earning)";
 
-    @Bean(name="mysqlItemWriter")
+    //    @Bean(name = "mysqlItemWriter")
     public JdbcBatchItemWriter getMySQLItemWriter(DataSource dataSource) {
         JdbcBatchItemWriter itewmWriter = new JdbcBatchItemWriter();
         itewmWriter.setDataSource(dataSource);

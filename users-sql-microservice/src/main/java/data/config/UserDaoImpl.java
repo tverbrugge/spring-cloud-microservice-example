@@ -1,6 +1,7 @@
-package data.domain.nodes;
+package data.config;
 
 import data.config.UserDao;
+import data.domain.nodes.User;
 import data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;

@@ -4,11 +4,17 @@ import data.domain.nodes.User;
 import data.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
@@ -24,8 +30,7 @@ import org.springframework.hateoas.ResourceProcessor;
 import java.util.Collections;
 
 
-@SpringBootApplication(exclude = {EmbeddedServletContainerAutoConfiguration.class, WebMvcAutoConfiguration.class})
-//@EnableNeo4jRepositories
+@SpringBootApplication()
 @EnableDiscoveryClient
 @EnableZuulProxy
 @EnableHystrix
@@ -37,19 +42,27 @@ public class Application {
     public Application() {
     }
 
-    private static final boolean runAsWebService = false;
+    private static final boolean runAsWebService = true;
+
+    @Autowired
+    JobLauncher jobLauncher;
+
+
+    @Autowired
+    Job job;
+
 
     public static void main(String[] args) {
 
         if (!runAsWebService) {
-//            System.getProperties().setProperty("spring.profiles.active", "demo");
+            System.getProperties().setProperty("spring.profiles.active", "demo");
         }
 
         SpringApplication app = new SpringApplication();
         app.setWebEnvironment(runAsWebService);
         app.setSources(Collections.singleton(Application.class));
-        ConfigurableApplicationContext ctx = app.run(args);
 
+        ConfigurableApplicationContext ctx = app.run(args);
         if (runAsWebService) {
             RepositoryRestConfiguration restConfiguration = ctx.getBean("config", RepositoryRestConfiguration.class);
             restConfiguration.exposeIdsFor(User.class);
@@ -60,8 +73,13 @@ public class Application {
     @Profile("demo")
     public CommandLineRunner demo(UserRepository repository) {
         return (args) -> {
-            repository.save(new User());
-            log.info("findAll");
+            insertFromCSVFileJob();
+            User newUser = new User();
+            newUser.setEmail("blah");
+            newUser.setFirstName("First__Name");
+            repository.save(newUser);
+            log.info("running findAll");
+            log.info("Current count = " + repository.count());
             for (User user : repository.findAll()) {
                 log.info(user.toString());
             }
@@ -69,16 +87,18 @@ public class Application {
         };
     }
 
-    @Bean
-    @Profile("microservice")
-    public ResourceProcessor<Resource<User>> movieProcessor() {
-        return new ResourceProcessor<Resource<User>>() {
-            @Override
-            public Resource<User> process(Resource<User> resource) {
-
-                resource.add(new Link("/movie/movies", "movies"));
-                return resource;
-            }
-        };
+    private void insertFromCSVFileJob() {
+        try {
+            jobLauncher.run(job, new JobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
     }
+
 }

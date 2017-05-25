@@ -5,7 +5,7 @@
     <artifactId>users-sql-microservice</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
-    <url>http://apache.maven.org</url>
+<!--    <url>http://apache.maven.org</url> -->
 
     <parent>
         <groupId>org.kbastani</groupId>
@@ -58,6 +58,10 @@
             <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
@@ -69,7 +73,6 @@
     </dependencies>
 
     <build>
-        <finalName>spring-batch</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,4 +1,6 @@
-package data.domain.nodes;
+package data.config;
+
+import data.domain.nodes.User;
 
 import java.util.List;
 

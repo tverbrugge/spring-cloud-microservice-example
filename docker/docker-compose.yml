@@ -30,6 +30,11 @@ user:
   links:
    - discovery
    - configserver
+user-sql:
+  image: kbastani/users-sql-microservice
+  links:
+   - discovery
+   - configserver
 movie:
   image: kbastani/movie-microservice
   links:

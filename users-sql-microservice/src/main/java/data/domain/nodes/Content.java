@@ -13,7 +13,7 @@ public class Content {
     private String title;
     private String url;
 
-    Set<Event> events;
+//    Set<Event> events;
 
     public String getTitle() {
         return title;
