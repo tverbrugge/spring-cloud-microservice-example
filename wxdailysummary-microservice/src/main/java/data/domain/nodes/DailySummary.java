@@ -16,7 +16,7 @@ public class DailySummary {
     Long id;
 
     @Column(name = "date")
-    Date firstName;
+    Date date;
 
     @Column(name = "prcp")
     Float precip;
@@ -40,7 +40,7 @@ public class DailySummary {
     public String toString() {
         return "DailySummary{" +
                 "id=" + id +
-                ", firstName=" + firstName +
+                ", date=" + date +
                 ", precip=" + precip +
                 ", snowDepth=" + snowDepth +
                 ", snow=" + snow +
@@ -54,8 +54,8 @@ public class DailySummary {
         return id;
     }
 
-    public Date getFirstName() {
-        return firstName;
+    public Date getDate() {
+        return date;
     }
 
     public Float getPrecip() {
