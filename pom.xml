@@ -10,7 +10,7 @@
 
     <modules>
         <module>users-microservice</module>
-        <module>users-sql-microservice</module>
+        <module>wxdailysummary-microservice</module>
         <module>discovery-microservice</module>
         <module>api-gateway-microservice</module>
         <module>recommendation-microservice</module>

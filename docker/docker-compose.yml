@@ -30,8 +30,8 @@ user:
   links:
    - discovery
    - configserver
-user-sql:
-  image: kbastani/users-sql-microservice
+wxdailysummary:
+  image: kbastani/wxdailysummary-microservice
   links:
    - discovery
    - configserver

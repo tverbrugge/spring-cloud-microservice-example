@@ -1,10 +1,10 @@
 ---
 applications:
-- name: users-sql-microservice
-  host: users-sql-microservice-${random-word}
+- name: wxdailysummary-microservice
+  host: wxdailysummary-microservice-${random-word}
   memory: 512M
   instances: 1
   timeout: 90
-  path: target/users-sql-microservice-0.1.0.jar
+  path: target/wxdailysummary-microservice-0.1.0.jar
   env:
     SPRING_PROFILES_ACTIVE: cloud

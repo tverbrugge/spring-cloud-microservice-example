@@ -101,4 +101,16 @@ public class Application {
         }
     }
 
+    @Bean
+    public ResourceProcessor<Resource<User>> movieProcessor() {
+        return new ResourceProcessor<Resource<User>>() {
+            @Override
+            public Resource<User> process(Resource<User> resource) {
+
+                resource.add(new Link("/wx/wxdata", "wx"));
+                return resource;
+            }
+        };
+    }
+
 }
