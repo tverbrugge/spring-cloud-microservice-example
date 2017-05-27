@@ -36,8 +36,41 @@ public class DailySummary {
     @Column(name = "awnd")
     Float averageWindSpeed;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setPrecip(Float precip) {
+        this.precip = precip;
+    }
+
+    public void setSnowDepth(Float snowDepth) {
+        this.snowDepth = snowDepth;
+    }
+
+    public void setSnow(Float snow) {
+        this.snow = snow;
+    }
+
+    public void setMaxTemperature(Integer maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public void setMinTemperature(Integer minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public void setAverageWindSpeed(Float averageWindSpeed) {
+        this.averageWindSpeed = averageWindSpeed;
+    }
+
     @Override
     public String toString() {
+
         return "DailySummary{" +
                 "id=" + id +
                 ", date=" + date +

@@ -1,6 +1,8 @@
 package data;
 
+import data.domain.nodes.DailySummary;
 import data.domain.nodes.User;
+import data.repositories.DailySummaryRepository;
 import data.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +33,9 @@ import java.util.Collections;
 
 
 @SpringBootApplication()
-@EnableDiscoveryClient
-@EnableZuulProxy
-@EnableHystrix
+//@EnableDiscoveryClient
+//@EnableZuulProxy
+//@EnableHystrix
 @ComponentScan(basePackages = {"data.config"})
 public class Application {
 
@@ -42,14 +44,19 @@ public class Application {
     public Application() {
     }
 
-    private static final boolean runAsWebService = true;
+    private static final boolean runAsWebService = false;
 
     @Autowired
     JobLauncher jobLauncher;
 
 
     @Autowired
-    Job job;
+    @javax.annotation.Resource(name = "readUsersJob")
+    Job readUsersJob;
+
+    @Autowired
+    @javax.annotation.Resource(name = "readWxDataJob")
+    Job readWxDataJob;
 
 
     public static void main(String[] args) {
@@ -71,9 +78,10 @@ public class Application {
 
     @Bean
     @Profile("demo")
-    public CommandLineRunner demo(UserRepository repository) {
+    public CommandLineRunner demo(UserRepository repository, DailySummaryRepository dailySummaryRepository) {
         return (args) -> {
             insertFromCSVFileJob();
+            insertDailySummariesFromCSVFileJob();
             User newUser = new User();
             newUser.setEmail("blah");
             newUser.setFirstName("First__Name");
@@ -83,13 +91,31 @@ public class Application {
             for (User user : repository.findAll()) {
                 log.info(user.toString());
             }
+            log.info("running findAll");
+            log.info("Current count = " + dailySummaryRepository.count());
+            for (DailySummary dailySummary : dailySummaryRepository.findAll()) {
+                log.info(dailySummary.toString());
+            }
 
         };
     }
 
     private void insertFromCSVFileJob() {
         try {
-            jobLauncher.run(job, new JobParameters());
+            jobLauncher.run(readUsersJob, new JobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+    }
+    private void insertDailySummariesFromCSVFileJob() {
+        try {
+            jobLauncher.run(readWxDataJob, new JobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
         } catch (JobRestartException e) {

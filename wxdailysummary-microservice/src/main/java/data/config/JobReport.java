@@ -46,7 +46,8 @@ public class JobReport {
 
 
         FlatFileItemReader<User> reader = new FlatFileItemReader<>();
-        reader.setResource(new PathResource("users-sql-microservice/user.csv"));
+        //reader.setResource(new PathResource("wxdailysummary-microservice/user.csv"));
+        reader.setResource(new PathResource("./user.csv"));
         reader.setLinesToSkip(1);
         reader.setLineMapper(lineMapper);
 

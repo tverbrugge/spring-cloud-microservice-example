@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Profile;
 /**
  * Created by troy on 5/22/17.
  */
-@Profile("microservice")
+@Profile("!demo")
 @Configuration
-@EnableDiscoveryClient
-@EnableZuulProxy
-@EnableHystrix
+//@EnableDiscoveryClient
+//@EnableZuulProxy
+//@EnableHystrix
 public class EurekaClientConfiguration {
 }
