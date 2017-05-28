@@ -44,7 +44,7 @@ public class Application {
     public Application() {
     }
 
-    private static final boolean runAsWebService = false;
+    private static final boolean runAsWebService = true;
 
     @Autowired
     JobLauncher jobLauncher;
@@ -74,6 +74,20 @@ public class Application {
             RepositoryRestConfiguration restConfiguration = ctx.getBean("config", RepositoryRestConfiguration.class);
             restConfiguration.exposeIdsFor(User.class);
         }
+    }
+
+//    @Bean
+    public CommandLineRunner readInDataFromCSVFiles(DailySummaryRepository dailySummaryRepository) {
+        return (args) -> {
+            insertFromCSVFileJob();
+            insertDailySummariesFromCSVFileJob();
+            log.info("running findAll");
+            log.info("Current count = " + dailySummaryRepository.count());
+            for (DailySummary dailySummary : dailySummaryRepository.findAll()) {
+//                log.info(dailySummary.toString());
+            }
+
+        };
     }
 
     @Bean
@@ -113,6 +127,7 @@ public class Application {
             e.printStackTrace();
         }
     }
+
     private void insertDailySummariesFromCSVFileJob() {
         try {
             jobLauncher.run(readWxDataJob, new JobParameters());

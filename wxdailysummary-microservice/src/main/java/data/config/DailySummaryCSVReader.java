@@ -12,18 +12,45 @@ import org.springframework.core.io.PathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by troy on 5/26/17.
  */
 @Component
 public class DailySummaryCSVReader extends FlatFileItemReader<DailySummary> {
 
+    private enum CSVFields {
+        DATE("DATE"), PRECIP("PRCP"), SNOW("SNOW"), SNOW_DEPTH("SNWD"), TEMPERATURE_MIN("TMIN");
+
+        private CSVFields(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+
+        private String name;
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+    }
+
     public DailySummaryCSVReader() {
         DefaultLineMapper<DailySummary> lineMapper = new DefaultLineMapper<>();
         lineMapper.setLineTokenizer(new DelimitedLineTokenizer() {
             {
-                setNames(new String[]{"STATION", "STATION_NAME", "DATE", "PRCP", "SNWD", "SNOW", "PSUN", "TSUN",
-                        "TAVG", "TMAX", "TMIN", "AWND", "WT09", "WT14", "WT07", "WT01", "WT15", "WT17", "WT06",
+                setNames(new String[]{"STATION", "STATION_NAME", CSVFields.DATE.getName(), CSVFields.PRECIP.getName(),
+                        CSVFields.SNOW_DEPTH.getName(), CSVFields.SNOW.getName(), "PSUN", "TSUN",
+                        "TAVG", "TMAX", CSVFields.TEMPERATURE_MIN.getName(), "AWND", "WT09", "WT14", "WT07", "WT01", "WT15", "WT17", "WT06",
                         "WT21", "WT05", "WT02", "WT11", "WT22", "WT04", "WT13", "WT16", "WT08", "WT18", "WT03",
                         "WT10", "WT19", "WV01", "WV03"});
             }
@@ -36,19 +63,32 @@ public class DailySummaryCSVReader extends FlatFileItemReader<DailySummary> {
 
             @Override
             public DailySummary mapFieldSet(FieldSet fs) throws BindException {
-                if(fs == null){
+                if (fs == null) {
                     return null;
                 }
                 DailySummary ds = new DailySummary();
-//                ds.setDate(fs.readDate("DATE"));
+                ds.setDate(parseDate(fs.readString(CSVFields.DATE.getName())));
                 ds.setMaxTemperature(fs.readInt("TMAX"));
-                ds.setMinTemperature(fs.readInt("TMIN"));
-                ds.setPrecip(fs.readFloat("PRCP"));
+                ds.setMinTemperature(fs.readInt(CSVFields.TEMPERATURE_MIN.getName()));
+                ds.setPrecip(fs.readFloat(CSVFields.PRECIP.getName()));
                 ds.setSnow(fs.readFloat("SNOW"));
+                ds.setSnowDepth(fs.readFloat(CSVFields.SNOW_DEPTH.getName()));
 
                 return ds;
 
 //                return super.mapFieldSet(fs);
+            }
+
+
+            private Date parseDate(String dateStr) {
+//                Matcher dateMatcher = datePattern.matcher(dateStr);
+
+                try {
+                    return dateFormat.parse(dateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return null;
             }
         });
 
@@ -57,6 +97,9 @@ public class DailySummaryCSVReader extends FlatFileItemReader<DailySummary> {
         setLinesToSkip(1);
         setLineMapper(lineMapper);
     }
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
 
 //    private DefaultLineMapper<DailySummary> lineMapper;
 

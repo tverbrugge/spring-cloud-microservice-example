@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +29,7 @@ public interface WxDailySummaryClient {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     void createWxDailySummary(@RequestBody WxDailySummary user);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/wxdailysummary/findByDate")
+    WxDailySummary findByDate(@RequestParam("date") Date date);
 }

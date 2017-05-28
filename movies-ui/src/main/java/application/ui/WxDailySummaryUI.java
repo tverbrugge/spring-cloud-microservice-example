@@ -14,6 +14,10 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+
 @SpringUI(path = "wx")
 @Title("DailySummary")
 @Theme("valo")
@@ -103,8 +107,14 @@ public class WxDailySummaryUI extends UI {
     }
 
     private void refreshContacts(String stringFilter) {
+
+        Date lastYear = new Date();
+        lastYear.setYear(lastYear.getYear() - 1);
+
+//        contactList.setContainerDataSource(new BeanItemContainer<>(
+//                WxDailySummary.class, wxDailySummaryClient.findAll().getContent()));
         contactList.setContainerDataSource(new BeanItemContainer<>(
-                WxDailySummary.class, wxDailySummaryClient.findAll().getContent()));
+                WxDailySummary.class, Collections.singleton(wxDailySummaryClient.findByDate(lastYear))));
 //        contactForm.setVisible(false);
     }
 }

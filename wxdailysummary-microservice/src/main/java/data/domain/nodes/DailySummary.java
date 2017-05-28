@@ -15,7 +15,7 @@ public class DailySummary {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "date")
+    @Column(name = "date", unique = true)
     Date date;
 
     @Column(name = "prcp")
