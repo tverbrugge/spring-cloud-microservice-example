@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Profile;
  */
 @Profile("!demo")
 @Configuration
-//@EnableDiscoveryClient
-//@EnableZuulProxy
-//@EnableHystrix
+@EnableDiscoveryClient
+@EnableZuulProxy
+@EnableHystrix
 public class EurekaClientConfiguration {
 }

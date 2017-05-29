@@ -40,12 +40,12 @@ public class JobConfig {
 //    @Autowired
 //    public UserDaoImpl customerDao;
 
-    @Bean(name = "readUsersJob")
+//    @Bean(name = "readUsersJob")
     public Job readUsersJob(FlatFileItemReader<User> flatFileItemReader) {
         return jobBuilderFactory.get("readUsersJob").incrementer(new RunIdIncrementer()).flow(readUsersJobStep1(flatFileItemReader)).end().build();
     }
 
-    @Bean
+//    @Bean
     public Step readUsersJobStep1(FlatFileItemReader<User> flatFileItemReader) {
         return stepBuilderFactory.get("readUsersJobStep1").<User, User>chunk(2).reader(flatFileItemReader).writer(
                 new UserWriter(userRepository)).build();

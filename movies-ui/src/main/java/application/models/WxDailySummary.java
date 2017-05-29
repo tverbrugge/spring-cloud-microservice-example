@@ -10,15 +10,15 @@ public class WxDailySummary {
 
     private Date date;
 
-    private Float prcp;
+    private Float precip;
 
     private Float snwd;
 
     private Float snow;
 
-    private Integer tmax;
+    private Integer maxTemperature;
 
-    private Integer tmin;
+    private Integer minTemperature;
 
     private Float awnd;
 
@@ -30,8 +30,8 @@ public class WxDailySummary {
         return date;
     }
 
-    public Float getPrcp() {
-        return prcp;
+    public Float getPrecip() {
+        return precip;
     }
 
     public Float getSnwd() {
@@ -42,12 +42,12 @@ public class WxDailySummary {
         return snow;
     }
 
-    public Integer getTmax() {
-        return tmax;
+    public Integer getMaxTemperature() {
+        return maxTemperature;
     }
 
-    public Integer getTmin() {
-        return tmin;
+    public Integer getMinTemperature() {
+        return minTemperature;
     }
 
     public Float getAwnd() {

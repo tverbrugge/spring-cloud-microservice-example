@@ -44,6 +44,14 @@ public class DailySummaryCSVReader extends FlatFileItemReader<DailySummary> {
         }
     }
 
+    private PathResource getCSVFileLocation() {
+        String dataDir = "../data";
+        if(System.getProperties().containsKey("data.dir")) {
+            dataDir = System.getProperty("data.dir");
+        }
+        return new PathResource(dataDir + "/DENVER_INTERNATIONAL_AIRPORT_CO-wxdata.csv");
+    }
+
     public DailySummaryCSVReader() {
         DefaultLineMapper<DailySummary> lineMapper = new DefaultLineMapper<>();
         lineMapper.setLineTokenizer(new DelimitedLineTokenizer() {
@@ -93,7 +101,7 @@ public class DailySummaryCSVReader extends FlatFileItemReader<DailySummary> {
         });
 
 
-        setResource(new PathResource("../data/DENVER_INTERNATIONAL_AIRPORT_CO-wxdata.csv"));
+        setResource(getCSVFileLocation());
         setLinesToSkip(1);
         setLineMapper(lineMapper);
     }

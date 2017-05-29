@@ -32,9 +32,15 @@ user:
    - configserver
 wxdailysummary:
   image: kbastani/wxdailysummary-microservice
+  ports:
+   - "8765:8765"
   links:
    - discovery
    - configserver
+  volumes:
+   - ../data:/data
+  environment:
+   - DATA.DIR=/data
 movie:
   image: kbastani/movie-microservice
   links:

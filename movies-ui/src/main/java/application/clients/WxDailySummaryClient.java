@@ -2,6 +2,7 @@ package application.clients;
 
 import application.models.WxDailySummary;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,6 @@ public interface WxDailySummaryClient {
             produces = MediaType.APPLICATION_JSON_VALUE)
     void createWxDailySummary(@RequestBody WxDailySummary user);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/wxdailysummary/findByDate")
-    WxDailySummary findByDate(@RequestParam("date") Date date);
+    @RequestMapping(method = RequestMethod.GET, value = "/wxdailysummary/search/findByDate")
+    WxDailySummary findByDate(@RequestParam("date") @DateTimeFormat(style = "yyyy-mm-dd") Date date);
 }

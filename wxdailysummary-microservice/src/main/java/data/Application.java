@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
@@ -24,6 +25,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -49,11 +51,6 @@ public class Application {
     @Autowired
     JobLauncher jobLauncher;
 
-
-    @Autowired
-    @javax.annotation.Resource(name = "readUsersJob")
-    Job readUsersJob;
-
     @Autowired
     @javax.annotation.Resource(name = "readWxDataJob")
     Job readWxDataJob;
@@ -77,9 +74,9 @@ public class Application {
     }
 
 //    @Bean
+//    @Profile("!demo")
     public CommandLineRunner readInDataFromCSVFiles(DailySummaryRepository dailySummaryRepository) {
         return (args) -> {
-            insertFromCSVFileJob();
             insertDailySummariesFromCSVFileJob();
             log.info("running findAll");
             log.info("Current count = " + dailySummaryRepository.count());
@@ -90,21 +87,34 @@ public class Application {
         };
     }
 
+    @EventListener(ApplicationReadyEvent.class)
+    public void runAfterInit() {
+        log.info("ApplicationReadyEvent");
+        log.info("Current count = " + dailySummaryRepository.count());
+    }
+
+    private DailySummaryRepository dailySummaryRepository;
+
+    @Bean
+    @Profile("!demo")
+    public CommandLineRunner checkCSVFileData(DailySummaryRepository dailySummaryRepository) {
+        return (args) -> {
+            this.dailySummaryRepository = dailySummaryRepository;
+            log.info("running findAll");
+            log.info("Current count = " + dailySummaryRepository.count());
+//            for (DailySummary dailySummary : dailySummaryRepository.findAll()) {
+////                log.info(dailySummary.toString());
+//            }
+
+        };
+    }
+
+
     @Bean
     @Profile("demo")
-    public CommandLineRunner demo(UserRepository repository, DailySummaryRepository dailySummaryRepository) {
+    public CommandLineRunner demo(DailySummaryRepository dailySummaryRepository) {
         return (args) -> {
-            insertFromCSVFileJob();
             insertDailySummariesFromCSVFileJob();
-            User newUser = new User();
-            newUser.setEmail("blah");
-            newUser.setFirstName("First__Name");
-            repository.save(newUser);
-            log.info("running findAll");
-            log.info("Current count = " + repository.count());
-            for (User user : repository.findAll()) {
-                log.info(user.toString());
-            }
             log.info("running findAll");
             log.info("Current count = " + dailySummaryRepository.count());
             for (DailySummary dailySummary : dailySummaryRepository.findAll()) {
@@ -112,20 +122,6 @@ public class Application {
             }
 
         };
-    }
-
-    private void insertFromCSVFileJob() {
-        try {
-            jobLauncher.run(readUsersJob, new JobParameters());
-        } catch (JobExecutionAlreadyRunningException e) {
-            e.printStackTrace();
-        } catch (JobRestartException e) {
-            e.printStackTrace();
-        } catch (JobInstanceAlreadyCompleteException e) {
-            e.printStackTrace();
-        } catch (JobParametersInvalidException e) {
-            e.printStackTrace();
-        }
     }
 
     private void insertDailySummariesFromCSVFileJob() {
