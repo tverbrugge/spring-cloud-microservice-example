@@ -81,6 +81,10 @@
                     </resources>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
