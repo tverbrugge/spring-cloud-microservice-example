@@ -3,7 +3,6 @@ package data;
 import data.domain.nodes.DailySummary;
 import data.domain.nodes.User;
 import data.repositories.DailySummaryRepository;
-import data.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -18,9 +17,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,9 +31,6 @@ import java.util.Collections;
 
 
 @SpringBootApplication()
-//@EnableDiscoveryClient
-//@EnableZuulProxy
-//@EnableHystrix
 @ComponentScan(basePackages = {"data.config"})
 public class Application {
 

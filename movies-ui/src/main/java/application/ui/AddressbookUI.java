@@ -1,7 +1,6 @@
 package application.ui;
 
 
-import application.clients.UserClient;
 import application.models.User;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -32,12 +31,6 @@ public class AddressbookUI extends UI {
 
     // ContactForm is an example of a custom component class
     ContactForm contactForm = new ContactForm();
-
-    // ContactService is a in-memory mock DAO that mimics
-    // a real-world datasource. Typically implemented for
-    // example as EJB or Spring Data based service.
-    @Autowired
-    UserClient userClient;
 
 
     /* The "Main method".
@@ -117,8 +110,6 @@ public class AddressbookUI extends UI {
     }
 
     private void refreshContacts(String stringFilter) {
-        contactList.setContainerDataSource(new BeanItemContainer<>(
-                User.class, userClient.findAll().getContent()));
         contactForm.setVisible(false);
     }
 

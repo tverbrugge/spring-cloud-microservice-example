@@ -4,12 +4,10 @@ import application.models.User;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.converter.DateToLongConverter;
-import com.vaadin.data.util.converter.ReverseConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
-import org.springframework.context.annotation.Bean;
 
 /* Create custom UI Components.
  *
@@ -88,13 +86,6 @@ public class ContactForm extends FormLayout {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
 
-            // Save DAO to backend with direct synchronous service API
-            getUI().userClient.createUser(contact);
-
-            String msg = String.format("Saved '%s %s'.",
-                    contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg, Type.TRAY_NOTIFICATION);
             getUI().refreshContacts();
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
