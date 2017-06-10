@@ -5,13 +5,11 @@ steps:
     id: "mvn-install"
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev", "."]
-    dir: "./spring-cloud-microservice-example/wxdailysummary-microservice/src/main/docker"
+    args: ["build", "-t", "gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev", "./spring-cloud-microservice-example/wxdailysummary-microservice/src/main/docker"]
     id: "docker-wxdailysummary-build"
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/${PROJECT_ID}/movies-ui:0.0.1-dev", "."]
-    dir: "./spring-cloud-microservice-example/movies-ui/src/main/docker"
+    args: ["build", "-t", "gcr.io/${PROJECT_ID}/movies-ui:0.0.1-dev", "./spring-cloud-microservice-example/movies-ui/src/main/docker"]
     id: "docker-moviesui-build"
 
 images: ["gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev"]
