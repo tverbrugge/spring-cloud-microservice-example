@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by troy on 6/6/17.
  */
-@FeignClient("wxdailysummary")
+//@FeignClient("wxdailysummary")
 public interface WxDailySummaryFeignClient extends WxDailySummaryClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/wxdailysummary")
