@@ -1,0 +1,15 @@
+steps:
+  - name: "gcr.io/cloud-builders/java/mvn"
+    env: ["PROJECT_ROOT=wxdailysummary"]
+    args: ["install"]
+    id: "mvn-install"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev", "./wxsummary-microservice/src/main/docker"]
+    id: "docker-wxdailysummary-build"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/${PROJECT_ID}/movies-ui:0.0.1-dev", "./movies-ui/src/main/docker"]
+    id: "docker-moviesui-build"
+
+images: ["gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev"]
