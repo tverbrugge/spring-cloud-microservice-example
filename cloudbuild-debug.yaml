@@ -1,7 +1,7 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/${PROJECT_ID}/movies-ui:0.0.1-dev", "."]
-    dir: 'spring-cloud-microservice-example/movies-ui/src/main/docker-debug'
+    dir: 'movies-ui/src/main/docker-debug'
     id: "docker-moviesui-build"
 
 #images: ["gcr.io/${PROJECT_ID}/wxdailysummary:0.0.1-dev"]
