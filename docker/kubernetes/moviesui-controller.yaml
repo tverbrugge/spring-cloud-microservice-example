@@ -24,7 +24,7 @@ spec:
       containers:
       - name: moviesui
         # Uncomment this line to use the public docker hub image
-        image: gcr.io/wxdailysummary/moviesui-microservice:v2
+        image: gcr.io/wxdailysummary/movies-ui:0.0.13
         # my own private Container Registry image
         #image: gcr.io/gdg-apps-1090/graphviz-webapp
         resources:

@@ -16,15 +16,24 @@ spec:
         app: wxdailysummary-controller
         tier: backend
     spec:
+      volumes:
+        - name: csv-store
+          gcePersistentDisk:
+            pdName: csv-store
+            fsType: ext4
+            readOnly: true
       containers:
       - name: server
         # Uncomment this line to use the public docker hub image
         # image: omerio/graphviz-server
         # my own private Container Registry image
-        image: gcr.io/wxdailysummary/wxdailysummary-microservice:v2
+        image: gcr.io/wxdailysummary/wxdailysummary-microservice
         # Arguments to the image entrypoint, more details here:
         # http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_container
         args: ["8080"]
+        volumeMounts:
+          - name: csv-store
+            mountPath: /data
         resources:
           # The resources specification for each Pod, more details here:
           # http://kubernetes.io/v1.1/docs/design/resources.html#resource-specifications

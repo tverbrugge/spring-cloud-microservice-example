@@ -32,6 +32,7 @@ public class WxDailySummaryRestClient implements WxDailySummaryClient {
 
     //    @Autowired
     private String uri = "http://wxdailysummary:8765";
+//    private String uri = "http://127.0.0.1:8765";
 
     private RestTemplate restTemplate;
     private RestTemplate pagedRestTemplate;
