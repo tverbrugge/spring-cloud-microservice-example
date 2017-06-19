@@ -8,7 +8,7 @@ metadata:
     app: moviesui
     tier: frontend
 spec:
-  replicas: 3
+  replicas: 1
   # these labels can be applied automatically
   # from the labels in the pod template if not set
   # selector:
@@ -24,7 +24,7 @@ spec:
       containers:
       - name: moviesui
         # Uncomment this line to use the public docker hub image
-        image: gcr.io/wxdailysummary/movies-ui:0.0.13
+        image: gcr.io/wxdailysummary/movies-ui:0.0.15
         # my own private Container Registry image
         #image: gcr.io/gdg-apps-1090/graphviz-webapp
         resources:
@@ -43,6 +43,6 @@ spec:
           # More details on the container ports here,
           # http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_containerport
           # The port exposed by the container
-        - containerPort: 8080
+        - containerPort: 9006
           # The port exposed on the host
 # hostPort: 8080

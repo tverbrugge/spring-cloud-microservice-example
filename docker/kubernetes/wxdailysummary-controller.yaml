@@ -8,7 +8,7 @@ metadata:
     app: wxdailysummary-controller
     tier: backend
 spec:
-  replicas: 2
+  replicas: 1
   # Pod Template
   template:
     metadata:
@@ -16,12 +16,6 @@ spec:
         app: wxdailysummary-controller
         tier: backend
     spec:
-      volumes:
-        - name: csv-store
-          gcePersistentDisk:
-            pdName: csv-store
-            fsType: ext4
-            readOnly: true
       containers:
       - name: server
         # Uncomment this line to use the public docker hub image
@@ -30,10 +24,7 @@ spec:
         image: gcr.io/wxdailysummary/wxdailysummary-microservice
         # Arguments to the image entrypoint, more details here:
         # http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_container
-        args: ["8080"]
-        volumeMounts:
-          - name: csv-store
-            mountPath: /data
+        args: ["8765"]
         resources:
           # The resources specification for each Pod, more details here:
           # http://kubernetes.io/v1.1/docs/design/resources.html#resource-specifications
@@ -44,4 +35,4 @@ spec:
           # More details on the container ports here,
           # http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_containerport
           # The port exposed by the container
-            - containerPort: 8080
+            - containerPort: 8765
